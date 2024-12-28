@@ -4,11 +4,17 @@ Este ejemplo, reconoce desde un archivo de entrada números enteros seguidos por
 Luego de reconocerlos, el parser debe tener el código necesario para crear una clase stack para ir apilando los números.
 Es importante mencionar que la lista de números aparecerá de manera invertida al imprimirla.
 
+>[!IMPORTANT]
+>Esta es solamente una guía y una sugerencia de generación, hace falta el manejo de errores y otras circunstancias que fueron manejadas en la fase 2.
+
 ## Gramática
 
 Es el conjunto de reglas y expresiones en sintaxis PEG para reconocer números seguidos por el caracter de nueva línea.
 Se agreagan las acciones semánticas necesarias a cada regla, escritas en Fortran entre llaves. 
-Considerar que al inicio de la gramática también se puede agregar código Fortran entre llaves.
+Considerar que al inicio de la gramática también se puede agregar código Fortran entre llaves. 
+
+>[!TIP]
+>Detectar la palabra contains para separar los bloques y colocarlos sin errores en el módulo del parser, ya que solo debe ir una vez la palabra reservada contains.
 
 [Gramática](grammar.peg)
 
@@ -36,7 +42,7 @@ Para este ejemplo se imprime el contenido del Stack cargado.
 
 ## Archivo de entrada
 
-Es un archivo de texto simple, con tres números y tres caracteres de nueva línea.
+Es un archivo de texto simple, con tres números y tres caracteres de nueva línea. Revisar que despúes del último número lleve un caracter de nueva línea.
 
 [Archivo de entrada](test.txt)
 
