@@ -42,10 +42,10 @@ end subroutine show
 function parse(inputstr) result(res)
 	character(len=:), intent(in), allocatable :: inputstr
 	type(node), pointer :: res
-    	input = inputstr
-		
-		! call initial rule s function
-		res => parses()
+	input = inputstr
+	
+	! call initial rule s function
+	res => parses()
 end function parse
 
 ! rule function s = n:e*
