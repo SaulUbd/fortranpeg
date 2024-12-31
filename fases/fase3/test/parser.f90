@@ -1,5 +1,5 @@
 module parser
-    ! initial code from FortranPEG grammar
+	! initial code from FortranPEG grammar
 	type :: node
 		integer :: value
 		type(node), pointer :: next => null()
