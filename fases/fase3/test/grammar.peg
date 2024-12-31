@@ -38,8 +38,8 @@ s = n:e* {
 	type(node), pointer :: res	
 	integer i
 	do i = 1, size(n)
-        	call push(n(i))
-    	end do
+		call push(n(i))
+	end do
 	res => head
 }
 
