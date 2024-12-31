@@ -1,6 +1,6 @@
 # Ejemplo de archivo de entrada para fase 3
 
-Este ejemplo, reconoce desde un archivo de entrada números enteros seguidos por el caracter de nueva línea.
+Este ejemplo reconoce números enteros seguido cada uno por un caracter de nueva línea, desde un archivo de entrada .
 Luego de reconocerlos, el parser debe tener el código necesario para crear una clase stack para ir apilando los números.
 Es importante mencionar que la lista de números aparecerá de manera invertida al imprimirla.
 
