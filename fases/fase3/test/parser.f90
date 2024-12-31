@@ -1,14 +1,13 @@
-module parser 
-
-	! initial code from FortranPEG grammar
-    	type :: node	
+module parser
+    ! initial code from FortranPEG grammar
+	type :: node
 		integer :: value
 		type(node), pointer :: next => null()
 	end type node
-
+	
 	type(node), pointer :: head => null()
-
-    	! global var for input
+	
+	! global var for input
 	character(len=:), allocatable :: input
 
 contains
