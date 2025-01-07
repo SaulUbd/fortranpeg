@@ -247,7 +247,7 @@ end module parser
 * @returns
 */
 export const rule = (data) => `
-  function peg_${data.id}() result (res)
+  recursive function peg_${data.id}() result (res)
       ${data.returnType} :: res
       ${data.exprDeclarations.join("\n")}
       character(len=:), allocatable :: temp

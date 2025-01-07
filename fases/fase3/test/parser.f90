@@ -1,194 +1,928 @@
+
+!auto-generated
 module parser
-	! initial code from FortranPEG grammar
-	type :: node
-		integer :: value
-		type(node), pointer :: next => null()
-	end type node
-	
-	type(node), pointer :: head => null()
-	
-	! global var for input
-	character(len=:), allocatable :: input
+  implicit none
+  character(len=:), allocatable, private :: input
+  integer, private :: savePoint, lexemeStart, cursor
 
-contains
+  interface toStr
+      module procedure intToStr
+      module procedure strToStr
+  end interface
+  
+  
 
-! initial code from FortranPEG grammar
-subroutine push(value)
-	integer, intent(in) :: value
-	type(node), pointer :: tmp
-    	if (associated(head)) then
-        	allocate(tmp)
-	    	tmp%value = value
-	    	tmp%next => head
-	    	head => tmp
-		else
-			allocate(head)
-			head%value = value
-			head%next => null()
-		end if	
-end subroutine push
+  contains
+  
+  
 
-subroutine show()
-	type(node), pointer :: tmp
-	tmp => head
-	do while (associated(tmp))
-		print *, tmp%value
-		tmp => tmp%next
-	end do
-end subroutine show
+  function parse(str) result(res)
+      character(len=:), allocatable :: str
+      integer :: res
+
+      input = str
+      cursor = 1
+
+      res = peg_s()
+  end function parse
+
+  
+  recursive function peg_s() result (res)
+      integer :: res
+      integer :: expr_0_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_e()
+              if (.not. acceptEOF()) cycle
+              
+              res = peg_s_f0(expr_0_0)
+
+              
+               
 
 
-! parse generated
-function parse(inputstr) result(res)
-	character(len=:), intent(in), allocatable :: inputstr
-	type(node), pointer :: res
-	input = inputstr
-	
-	! call initial rule s function
-	res => parses()
-end function parse
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
 
-! rule function s = n:e*
-function parses() result(res)
-	! type defined by user
-	type(node), pointer :: res
-	
-	! expressions array, type infered from rule e
-	integer, allocatable :: s0(:)
-	integer, allocatable :: s1(:)
-	
-	! infered type from rule e
-	integer :: s2
+  end function peg_s
 
-	integer :: len
-	allocate(s0(0))
-	s2 = -999
-	s2 = parsee()
-	do while (s2 /= -999)
-		! rezise array and set s2
-		len = size(s0) + 1
-		if (allocated(s1)) deallocate(s1)
-		allocate(s1(len))
-		s1(1:size(s0)) = s0
-		s1(len) = s2
-		if (allocated(s0)) deallocate(s0)
-		allocate(s0(len))
-		s0(1:len) = s1
-		s2 = -999
-		
-		! get expression if it exists
-		s2 = parsee()
-	end do
-	
-	! return the value of sematic actions
-	res => f0(s0)
-end function parses
+   function peg_s_negative() result (res)
+      integer :: res
+      integer :: expr_0_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps
+      integer :: i, tempi
+      logical :: pivote
 
-! rule function e = n:num sep
-function parsee() result(res)
-	! type defined by user
-	integer :: res
-	
-	! expression value, type infered from rule num
-	integer :: s0, s1
-	
-	! expression value, type string because actions does not exist
-	character(len=:), allocatable :: s2
-	
-	! value for EOF or error (suggestion: use classes)
-	s0 = -999
-	s1 = -999
-	
-	s2 = ""
-	s1 = parsenum()
-	if (s1 /= -999) then
-		s2 = parsesep()
-		if (s2 /= "") then
-			! return the value of sematic actions
-			s0 = f1(s1)
-		end if
-	end if
-	res = s0
-end function parsee
+      savePoint = cursor
+       
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_e()
+              if (.not. acceptEOF()) cycle
+              
+              res = peg_s_f0(expr_0_0)
 
-! rule function num = n:[0-9]+
-function parsenum() result(res)
-	! type defined by user
-	integer :: res
-	
-	! individual lexeme extraction (You can use nextsym())
-	integer :: cursor
-	character(len=:), allocatable :: s0
-	s0 = ""
-	cursor = 1
-	
-	if (cursor > len(input)) then
-		res = -999
-		return
-	end if
-	
-	do while (cursor <= len_trim(input) .and. (((iachar(input(cursor:cursor)) >= iachar("0") .and. &
-		iachar(input(cursor:cursor)) <= iachar("9")))))
-		cursor = cursor + 1
-	end do
-	s0 = input(1:cursor-1)
-	input = input(cursor:)
-	
-	! return the value of sematic actions
-	res = f2(s0)
-end function parsenum
+              
+               
 
-! rule function sep = "\n"
-function parsesep() result(res)
-	! res is lexeme, type string because actions does not exist
-	character(len=:), allocatable :: res
-	
-	! individual lexeme extraction (You can use nextsym())
-	integer :: cursor
 
-	res = ""
-	cursor = 1
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
 
-	if (cursor > len(input)) return
-		if (cursor <= len_trim(input) .and. (char(10) == input(cursor:cursor + 0 ))) then 
-			cursor = cursor + 1
-		end if
-	res = input(1:cursor-1)
-	input = input(cursor:)
-end function parsesep
+   end function peg_s_negative
 
-! semantic action function from rule s
-function f0(n) result(res)
-	! type generated from infered type of labels
-	integer, dimension(:), intent(in) :: n
-	
-	! code from user in semantic actions
-	type(node), pointer :: res	
-	integer i
-	do i = 1, size(n)
-		call push(n(i))
-	end do
-	res => head
-end function f0
+  function peg_s_kleene() result (res)
+      integer :: res
+      integer :: expr_0_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
 
-! semantic action function from rule e
-function f1(n) result(res)
-	! type generated from infered type of labels
-	integer, intent(in) :: n
-	
-	! code from user in semantic actions
-	integer :: res
-	res = n
-end function f1
+      savePoint = cursor
+      
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_e()
+              if (.not. acceptEOF()) cycle
+              
+              res = peg_s_f0(expr_0_0)
 
-! semantic action function from rule num
-function f2(n) result(res)
-	! type generated from infered type of labels
-	character(len=:), allocatable :: n
-	
-	! code from user in semantic actions
-	integer :: res
-	read(n, *) res
-end function f2
+              
+               
+
+
+              exit
+          
+          case default
+        res = -99999
+          end select
+      end do
+
+  end function peg_s_kleene
+
+
+  recursive function peg_e() result (res)
+      integer :: res
+      integer :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+integer :: expr_0_2
+character(len=:), allocatable :: expr_1_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 2
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_t()
+
+               lexemeStart = cursor
+               if(.not. acceptString('+')) cycle
+               expr_0_1 = consumeInput()
+       
+expr_0_2 = peg_e()
+              
+              
+              res = peg_e_f0(expr_0_0, expr_0_2)
+
+              
+               
+
+
+              exit
+          
+          case(1)
+              cursor = savePoint
+              
+              
+              
+              res = peg_t()
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+  end function peg_e
+
+   function peg_e_negative() result (res)
+      integer :: res
+      integer :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+integer :: expr_0_2
+character(len=:), allocatable :: expr_1_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps
+      integer :: i, tempi
+      logical :: pivote
+
+      savePoint = cursor
+       
+      do i = 0, 2
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_t()
+
+               lexemeStart = cursor
+               if( acceptString('+')) cycle
+               expr_0_1 = consumeInput()
+       
+expr_0_2 = peg_e()
+              
+              
+              res = peg_e_f0(expr_0_0, expr_0_2)
+
+              
+               
+
+
+              exit
+          
+          case(1)
+              cursor = savePoint
+              
+              
+              
+              res = peg_t()
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+   end function peg_e_negative
+
+  function peg_e_kleene() result (res)
+      integer :: res
+      integer :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+integer :: expr_0_2
+character(len=:), allocatable :: expr_1_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 2
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_t()
+
+               lexemeStart = cursor
+               if(.not. acceptString('+')) cycle
+               expr_0_1 = consumeInput()
+       
+expr_0_2 = peg_e()
+              
+              
+              res = peg_e_f0(expr_0_0, expr_0_2)
+
+              
+               
+
+
+              exit
+          
+          case(1)
+              cursor = savePoint
+              
+              
+              
+              res = peg_t()
+              
+               
+
+
+              exit
+          
+          case default
+        res = -99999
+          end select
+      end do
+
+  end function peg_e_kleene
+
+
+  recursive function peg_t() result (res)
+      integer :: res
+      integer :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+integer :: expr_0_2
+character(len=:), allocatable :: expr_1_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 2
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_f()
+
+               lexemeStart = cursor
+               if(.not. acceptString('*')) cycle
+               expr_0_1 = consumeInput()
+       
+expr_0_2 = peg_t()
+              
+              
+              res = peg_t_f0(expr_0_0, expr_0_2)
+
+              
+               
+
+
+              exit
+          
+          case(1)
+              cursor = savePoint
+              
+              
+              
+              res = peg_f()
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+  end function peg_t
+
+   function peg_t_negative() result (res)
+      integer :: res
+      integer :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+integer :: expr_0_2
+character(len=:), allocatable :: expr_1_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps
+      integer :: i, tempi
+      logical :: pivote
+
+      savePoint = cursor
+       
+      do i = 0, 2
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_f()
+
+               lexemeStart = cursor
+               if( acceptString('*')) cycle
+               expr_0_1 = consumeInput()
+       
+expr_0_2 = peg_t()
+              
+              
+              res = peg_t_f0(expr_0_0, expr_0_2)
+
+              
+               
+
+
+              exit
+          
+          case(1)
+              cursor = savePoint
+              
+              
+              
+              res = peg_f()
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+   end function peg_t_negative
+
+  function peg_t_kleene() result (res)
+      integer :: res
+      integer :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+integer :: expr_0_2
+character(len=:), allocatable :: expr_1_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 2
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg_f()
+
+               lexemeStart = cursor
+               if(.not. acceptString('*')) cycle
+               expr_0_1 = consumeInput()
+       
+expr_0_2 = peg_t()
+              
+              
+              res = peg_t_f0(expr_0_0, expr_0_2)
+
+              
+               
+
+
+              exit
+          
+          case(1)
+              cursor = savePoint
+              
+              
+              
+              res = peg_f()
+              
+               
+
+
+              exit
+          
+          case default
+        res = -99999
+          end select
+      end do
+
+  end function peg_t_kleene
+
+
+  recursive function peg_f() result (res)
+      integer :: res
+      character(len=:), allocatable :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+character(len=:), allocatable :: expr_0_2
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg__()
+
+               lexemeStart = cursor
+               if (.not. (acceptRange('0', '9'))) cycle
+               do while (.not. cursor > len(input))
+                   if (.not. (acceptRange('0', '9'))) exit
+               end do
+               expr_0_1 = consumeInput()
+           
+expr_0_2 = peg__()
+              
+              
+              res = peg_f_f0(expr_0_1)
+
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+  end function peg_f
+
+   function peg_f_negative() result (res)
+      integer :: res
+      character(len=:), allocatable :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+character(len=:), allocatable :: expr_0_2
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps
+      integer :: i, tempi
+      logical :: pivote
+
+      savePoint = cursor
+       
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg__()
+
+               lexemeStart = cursor
+               if (.not. (acceptRange('0', '9'))) cycle
+               do while (.not. cursor > len(input))
+                   if (.not. (acceptRange('0', '9'))) exit
+               end do
+               expr_0_1 = consumeInput()
+           
+expr_0_2 = peg__()
+              
+              
+              res = peg_f_f0(expr_0_1)
+
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+   end function peg_f_negative
+
+  function peg_f_kleene() result (res)
+      integer :: res
+      character(len=:), allocatable :: expr_0_0
+character(len=:), allocatable :: expr_0_1
+character(len=:), allocatable :: expr_0_2
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              expr_0_0 = peg__()
+
+               lexemeStart = cursor
+               if (.not. (acceptRange('0', '9'))) cycle
+               do while (.not. cursor > len(input))
+                   if (.not. (acceptRange('0', '9'))) exit
+               end do
+               expr_0_1 = consumeInput()
+           
+expr_0_2 = peg__()
+              
+              
+              res = peg_f_f0(expr_0_1)
+
+              
+               
+
+
+              exit
+          
+          case default
+        res = -99999
+          end select
+      end do
+
+  end function peg_f_kleene
+
+
+  recursive function peg__() result (res)
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              
+              
+              
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+  end function peg__
+
+   function peg___negative() result (res)
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps
+      integer :: i, tempi
+      logical :: pivote
+
+      savePoint = cursor
+       
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              
+              
+              
+              
+               
+
+
+              exit
+          
+          case default
+              call pegError()
+          end select
+      end do
+
+   end function peg___negative
+
+  function peg___kleene() result (res)
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
+      character(len=:), allocatable :: temp
+      integer :: count, min_reps, max_reps, tempi
+      integer :: i
+      logical :: pivote
+
+      savePoint = cursor
+      
+      do i = 0, 1
+          select case(i)
+          
+          case(0)
+              cursor = savePoint
+              
+              
+              
+              
+              
+               
+
+
+              exit
+          
+          case default
+        res = ""
+          end select
+      end do
+
+  end function peg___kleene
+
+
+  
+  function peg_s_f0(out) result(res)
+      integer :: out
+      integer :: res
+      
+    res = out
+
+  end function peg_s_f0
+  
+
+  function peg_e_f0(left, right) result(res)
+      integer :: left
+integer :: right
+      integer :: res
+      
+    res = left + right
+
+  end function peg_e_f0
+  
+
+  function peg_t_f0(left, right) result(res)
+      integer :: left
+integer :: right
+      integer :: res
+      
+    res = left * right
+
+  end function peg_t_f0
+  
+
+  function peg_f_f0(num) result(res)
+      character(len=:), allocatable :: num
+      integer :: res
+      
+    read(num, *) res
+
+  end function peg_f_f0
+  
+
+  function acceptString(str) result(accept)
+      character(len=*) :: str
+      logical :: accept
+      integer :: offset
+
+      offset = len(str) - 1
+      if (str /= input(cursor:cursor + offset)) then
+          accept = .false.
+          return
+      end if
+      cursor = cursor + len(str)
+      accept = .true.
+  end function acceptString
+
+  function acceptStringCI(str) result(accept)
+       character(len=*) :: str
+       logical :: accept
+       integer :: offset
+       character(len=len(str)) :: lower_input
+   
+       offset = len(str) - 1
+       lower_input = tolower(input(cursor:cursor + offset))
+       if (tolower(str) /= lower_input) then
+           accept = .false.
+           return
+       end if
+       cursor = cursor + len(str)
+       accept = .true.
+   end function acceptStringCI
+
+
+  function acceptRange(bottom, top) result(accept)
+      character(len=1) :: bottom, top
+      logical :: accept
+
+      if(.not. (input(cursor:cursor) >= bottom .and. input(cursor:cursor) <= top)) then
+          accept = .false.
+          return
+      end if
+      cursor = cursor + 1
+      accept = .true.
+  end function acceptRange
+
+  function acceptRangeCI(bottom, top) result(accept)
+       character(len=1) :: bottom, top
+       logical :: accept
+       character(len=1) :: lower_input
+
+       lower_input = tolower(input(cursor:cursor))
+       if (.not. (lower_input >= tolower(bottom) .and. lower_input <= tolower(top))) then
+           accept = .false.
+           return
+       end if
+       cursor = cursor + 1
+       accept = .true.
+   end function acceptRangeCI
+
+  function acceptSet(set) result(accept)
+      character(len=1), dimension(:) :: set
+      logical :: accept
+
+      if(.not. (findloc(set, input(cursor:cursor), 1) > 0)) then
+          accept = .false.
+          return
+      end if
+      cursor = cursor + 1
+      accept = .true.
+  end function acceptSet
+
+   
+
+   function acceptSetCI(set) result(accept)
+       character(len=1), dimension(:) :: set
+       logical :: accept
+       character(len=1) :: lower_input
+
+       lower_input = tolower(input(cursor:cursor))
+       if (.not. (findloc(set, lower_input, 1) > 0)) then
+           accept = .false.
+           return
+       end if
+       cursor = cursor + 1
+       accept = .true.
+   end function acceptSetCI
+
+  function acceptPeriod() result(accept)
+      logical :: accept
+
+      if (cursor > len(input)) then
+          accept = .false.
+          return
+      end if
+      cursor = cursor + 1
+      accept = .true.
+  end function acceptPeriod
+
+  function acceptEOF() result(accept)
+      logical :: accept
+
+      if(.not. cursor > len(input)) then
+          accept = .false.
+          return
+      end if
+      accept = .true.
+  end function acceptEOF
+
+  function consumeInput() result(substr)
+      character(len=:), allocatable :: substr
+
+      substr = input(lexemeStart:cursor - 1)
+  end function consumeInput
+
+  subroutine pegError()
+      print '(A,I1,A)', "Error at ", cursor, ": '"//input(cursor:cursor)//"'"
+
+      call exit(1)
+  end subroutine pegError
+
+  function intToStr(int) result(cast)
+      integer :: int
+      character(len=31) :: tmp
+      character(len=:), allocatable :: cast
+      if (int == -99999) then
+             cast = ""
+             return
+        end if
+       if (int == -9999) then
+               cast = ""
+               return
+            end if
+      write(tmp, '(I0)') int
+      cast = trim(adjustl(tmp))
+  end function intToStr
+
+  function strToStr(str) result(cast)
+      character(len=:), allocatable :: str
+      character(len=:), allocatable :: cast
+
+      cast = str
+  end function strToStr
+
+  function strToInt(str) result(cast)
+        character(len=:), allocatable :: str
+           integer :: cast
+           if (len(trim(str)) == 0) then
+               cast = -9999
+               return
+           end if
+           read(str, *) cast
+   end function strToInt
+
+   function acceptStringDelim(str) result(accept)
+     character(len=*) :: str
+     logical :: accept
+     integer :: offset
+     character(len=:), allocatable :: beforeDelim, afterDelim, prueba
+
+     offset = len(str) - 1
+
+         ! Verificar si el delimitador coincide con la parte actual de la cadena
+             if (str /= input(cursor:cursor + offset)) then
+                 accept = .false.
+                 return
+             end if
+
+             ! Realizar el corte
+                 beforeDelim = input(1:cursor-1)       ! Parte antes del lexemeStart
+
+             afterDelim = input(cursor+len(str):)           ! Parte después del delimitador
+
+             input =beforeDelim // afterDelim
+             
+             ! Mover el cursor después del delimitador
+             accept = .true.
+       end function acceptStringDelim
+
+
+
+  function tolower(str) result(lower_str)
+       character(len=*), intent(in) :: str
+       character(len=len(str)) :: lower_str
+       integer :: i
+
+       lower_str = str 
+       do i = 1, len(str)
+           if (iachar(str(i:i)) >= iachar('A') .and. iachar(str(i:i)) <= iachar('Z')) then
+               lower_str(i:i) = achar(iachar(str(i:i)) + 32)
+           end if
+       end do
+   end function tolower
 
 end module parser
