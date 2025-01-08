@@ -32,7 +32,9 @@ export async function generateParser(cst) {
  * @returns
  */
 export function getActionId(ruleId, choice) {
-    console.log(`peg_${ruleId}_f${choice}`);
+    console.log(`getActionId: `)
+    console.dir(ruleId)
+    console.dir(choice)
     return `peg_${ruleId}_f${choice}`;
 }
 
@@ -43,6 +45,9 @@ export function getActionId(ruleId, choice) {
  * @returns
  */
 export function getReturnType(functionId, actionReturnTypes) {
+    console.log(`getReturnType: `)
+    console.dir(functionId)
+    console.dir(actionReturnTypes)
     return actionReturnTypes[functionId] ?? 'character(len=:), allocatable';
 }
 

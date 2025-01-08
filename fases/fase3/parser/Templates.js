@@ -247,7 +247,7 @@ end module parser
 * @returns
 */
 export const rule = (data) => `
-  function peg_${data.id}() result (res)
+  recursive function peg_${data.id}() result (res)
       ${data.returnType} :: res
       ${data.exprDeclarations.join("\n")}
       character(len=:), allocatable :: temp
@@ -308,7 +308,7 @@ function getReplaceKleene(data) {
 * @returns
 */
 export const election = (data) => `
-      do i = 0, ${data.exprs.length}
+      do i = 0, ${data.exprs.length-1}
           select case(i)
           ${data.exprs
             .map(
@@ -396,7 +396,7 @@ export const strExpr = (data) => {
                     ${data.destination} = consumeInput()
                 `;
    default:
-     console.log(data.quantifier);
+      console.log(data.quantifier);
      if(data.conteos){
         if(data.delim != null || data.delim !=  undefined){
             if(data.conteos[1] === "simple"){
@@ -857,12 +857,17 @@ export const strExpr_NegAssertion = (data) => {
 * }} data
 * @returns
 */
-export const strResultExpr = (data) => {
- if (data.exprs && data.exprs.length > 0) {
+export const strResultExpr = (data, haveAction) => {
+ if (data.exprs && data.exprs.length > 0 && haveAction) {
    return `
               res = ${data.exprs.map((expr) => `toStr(${expr})`).join("//")}
    `;
- } else {
+ } else if (! haveAction){
+   return `
+              res = ${data.exprs.map((expr) => `${expr}`).join("//")}
+   `;
+}
+ else {
    return ` `;
  }
 };
