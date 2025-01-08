@@ -396,7 +396,7 @@ export const strExpr = (data) => {
                     ${data.destination} = consumeInput()
                 `;
    default:
-     console.log(data.quantifier);
+      console.log(data.quantifier);
      if(data.conteos){
         if(data.delim != null || data.delim !=  undefined){
             if(data.conteos[1] === "simple"){
