@@ -1,0 +1,23 @@
+s = out:e {
+    integer :: res
+    res = out
+}
+
+e = left:t "+" right:e {
+    integer :: res
+    res = left + right
+}
+    / t
+
+t = left:f "*" right:t {
+    integer :: res
+    res = left * right
+}
+    / f 
+
+f = _ num:[0-9]+ _ {
+    integer :: res
+    read(num, *) res
+}
+
+_ = [ \t\n\r]*
