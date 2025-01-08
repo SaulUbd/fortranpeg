@@ -44,11 +44,8 @@ export default class FortranTranslator {
     console.log("\nVisit Grammar: ")
     console.dir(node)
     console.dir(this.actionReturnTypes)
-    
-    
     const rules = node.rules.map((rule) => rule.accept(this));
-    console.log(`\t${this.actionReturnTypes}`)
-    console.log(`\tRules: ${rules}`)
+
     return Template.main({
       beforeContains: node.globalCode?.before ?? "",
       afterContains: node.globalCode?.after ?? "",
@@ -67,7 +64,8 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitRegla(node) {
-    console.log("\nvisit Regla:")
+
+    console.log("\nVisit Regla: ")
     console.dir(node)
     console.dir(this.actionReturnTypes)
     this.currentRule = node.id;
@@ -87,9 +85,10 @@ export default class FortranTranslator {
           .filter((expr) => expr instanceof CST.Pluck)
           .map((label, j) => {
             const expr = label.labeledExpr.annotatedExpr.expr;
+            console.log(election)
             return `${
               expr instanceof CST.Identificador
-                ? getReturnType(getActionId(expr.id, i), this.actionReturnTypes)
+                ? getReturnType(getActionId(expr.id, election.action ? i : 0), this.actionReturnTypes)
                 : "character(len=:), allocatable"
             } :: expr_${i}_${j}`;
           })
@@ -102,6 +101,7 @@ export default class FortranTranslator {
     return ruleTranslation;
   }
 
+
   /**
    * @param {CST.Opciones} node
    * @this {Visitor}
@@ -109,8 +109,6 @@ export default class FortranTranslator {
   visitOpciones(node) {
     console.log("\Visit Opciones: ") // <3
     console.dir(node)
-
-
     return Template.election({
       exprs: node.exprs.map((expr) => {
         const translation = expr.accept(this);
@@ -125,20 +123,22 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitUnion(node) {
-    console.log("\nVisit Union:")
-    console.log(`\t: ${node}`)
+    console.log("\nVisit Union: ") // <3
+    console.dir(node)
     const matchExprs = node.exprs.filter((expr) => expr instanceof CST.Pluck);
-    console.log(`\tMatchExprs: ${matchExprs}`)
+    console.log(`\tMatchExprs:`)
+    console.dir(matchExprs)
     const exprVars = matchExprs.map(
       (_, i) => `expr_${this.currentChoice}_${i}`
     );
-    console.log(`\t exprVars: ${exprVars}`)
+    console.log(`\texprVars: ${exprVars}`)
 
     /** @type {string[]} */
     let neededExprs;
     /** @type {string} */
     let resultExpr;
     const currFnId = getActionId(this.currentRule, this.currentChoice);
+
     console.log(`\t currFnId: ${currFnId}`)
     if (currFnId in this.actionReturnTypes) {
       neededExprs = exprVars.filter((_, i) => matchExprs[i].labeledExpr.label);
@@ -146,19 +146,16 @@ export default class FortranTranslator {
         fnId: getActionId(this.currentRule, this.currentChoice),
         exprs: neededExprs.length > 0 ? neededExprs : [],
       });
-    } else if (node.exprs.length === 1) {
-      let actualExpr = node.exprs[0].labeledExpr.annotatedExpr.expr;
-      node.exprs = []; 
-      if (actualExpr instanceof CST.Identificador) {
-        resultExpr = "res = "+actualExpr.accept(this);
-      } else {
-        resultExpr = "";
-      }
-    }else {
+    } /*else if (!node.action){
+      resultExpr = `${
+
+      }`
+
+    }*/ else {
       neededExprs = exprVars.filter((_, i) => matchExprs[i].pluck);
       resultExpr = Template.strResultExpr({
         exprs: neededExprs.length > 0 ? neededExprs : exprVars,
-      });
+      }, node.action ? true : false);
     }
     this.currentExpr = 0;
 
@@ -167,7 +164,7 @@ export default class FortranTranslator {
     return Template.union({
       exprs: node.exprs.map((expr) => {
         const translation = expr.accept(this);
-        console.log(`\t translation: ${translation}`)
+        console.log(`\t translation: ${translation}`);
         if (expr instanceof CST.Pluck) this.currentExpr++;
         return translation;
       }),
@@ -186,7 +183,6 @@ export default class FortranTranslator {
   visitPluck(node) {
     console.log("\nVisit Pluck: ")
     console.dir(node)
-
     return node.labeledExpr.accept(this);
   }
 
@@ -197,9 +193,8 @@ export default class FortranTranslator {
   visitLabel(node) {
     console.log("\nVisit Label: ")
     console.dir(node)
-
     return node.annotatedExpr.accept(this);
-  } // <3
+  }
 
   /**
    * @param {CST.Annotated} node
@@ -207,7 +202,7 @@ export default class FortranTranslator {
    */
   visitAnnotated(node) {
     console.log("\nVisit Annotated: ")
-    console.dir(node) 
+    console.dir(node)
     console.dir(this.actionReturnTypes)
     if (node.expr instanceof CST.Opciones){
       return ``
@@ -574,7 +569,6 @@ export default class FortranTranslator {
         });
       }
     } else {
-      console.log(`\tQTY it's not defined`)
       if (node.expr instanceof CST.Identificador) {
         return `${getExprId(
           this.currentChoice,
@@ -593,7 +587,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitConteoAction(node){
-    console.log("\nVisit Conteo-Action: ")
+    console.log("\nVisit Conte-Action")
     console.dir(node)
     if(node.delim){
       if(node.simple){
@@ -644,7 +638,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitAssertion(node) {
-    console.log("\nVisit Assertion: ")
+    console.log("\nVisit Assertion")
     console.dir(node)
     if (node.assertion instanceof CST.Identificador) {
       return `temp= ${node.assertion.accept(this)}`;
@@ -734,9 +728,9 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitClase(node) {
+    // [abc0-9A-Z]
     console.log("\nVisit Clase: ")
     console.dir(node)
-    // [abc0-9A-Z]
     let characterClass = [];
     const literalMap = {
       "\\t": "char(9)", // Tabulación
@@ -781,7 +775,6 @@ export default class FortranTranslator {
   visitRango(node) {
     console.log("\nVisit Rango: ")
     console.dir(node)
-
     if (node.isCase == null || node.isCase == false) {
       return `acceptRange('${node.bottom}', '${node.top}')`;
     } else {
@@ -794,7 +787,8 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitIdentificador(node) {
-    console.log("\nVisit identificador: ")
+
+    console.log("\nVisit Identificador: ")
     console.dir(node)
     return getRuleId(node.id) + "()";
   }

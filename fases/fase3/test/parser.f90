@@ -37,7 +37,7 @@ module parser
 
       savePoint = cursor
       
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
@@ -71,7 +71,7 @@ module parser
 
       savePoint = cursor
        
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
@@ -105,7 +105,7 @@ module parser
 
       savePoint = cursor
       
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
@@ -135,7 +135,7 @@ module parser
       integer :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 integer :: expr_0_2
-character(len=:), allocatable :: expr_1_0
+integer :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -143,7 +143,7 @@ character(len=:), allocatable :: expr_1_0
 
       savePoint = cursor
       
-      do i = 0, 2
+      do i = 0, 1
           select case(i)
           
           case(0)
@@ -169,9 +169,11 @@ expr_0_2 = peg_e()
           case(1)
               cursor = savePoint
               
+              expr_1_0 = peg_t()
               
               
-              res = peg_t()
+              res = expr_1_0
+   
               
                
 
@@ -190,7 +192,7 @@ expr_0_2 = peg_e()
       integer :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 integer :: expr_0_2
-character(len=:), allocatable :: expr_1_0
+integer :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps
       integer :: i, tempi
@@ -198,7 +200,7 @@ character(len=:), allocatable :: expr_1_0
 
       savePoint = cursor
        
-      do i = 0, 2
+      do i = 0, 1
           select case(i)
           
           case(0)
@@ -224,9 +226,11 @@ expr_0_2 = peg_e()
           case(1)
               cursor = savePoint
               
+              expr_1_0 = peg_t()
               
               
-              res = peg_t()
+              res = expr_1_0
+   
               
                
 
@@ -245,7 +249,7 @@ expr_0_2 = peg_e()
       integer :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 integer :: expr_0_2
-character(len=:), allocatable :: expr_1_0
+integer :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -253,7 +257,7 @@ character(len=:), allocatable :: expr_1_0
 
       savePoint = cursor
       
-      do i = 0, 2
+      do i = 0, 1
           select case(i)
           
           case(0)
@@ -279,9 +283,11 @@ expr_0_2 = peg_e()
           case(1)
               cursor = savePoint
               
+              expr_1_0 = peg_t()
               
               
-              res = peg_t()
+              res = expr_1_0
+   
               
                
 
@@ -301,7 +307,7 @@ expr_0_2 = peg_e()
       integer :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 integer :: expr_0_2
-character(len=:), allocatable :: expr_1_0
+integer :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -309,7 +315,7 @@ character(len=:), allocatable :: expr_1_0
 
       savePoint = cursor
       
-      do i = 0, 2
+      do i = 0, 1
           select case(i)
           
           case(0)
@@ -335,9 +341,11 @@ expr_0_2 = peg_t()
           case(1)
               cursor = savePoint
               
+              expr_1_0 = peg_f()
               
               
-              res = peg_f()
+              res = expr_1_0
+   
               
                
 
@@ -356,7 +364,7 @@ expr_0_2 = peg_t()
       integer :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 integer :: expr_0_2
-character(len=:), allocatable :: expr_1_0
+integer :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps
       integer :: i, tempi
@@ -364,7 +372,7 @@ character(len=:), allocatable :: expr_1_0
 
       savePoint = cursor
        
-      do i = 0, 2
+      do i = 0, 1
           select case(i)
           
           case(0)
@@ -390,9 +398,11 @@ expr_0_2 = peg_t()
           case(1)
               cursor = savePoint
               
+              expr_1_0 = peg_f()
               
               
-              res = peg_f()
+              res = expr_1_0
+   
               
                
 
@@ -411,7 +421,7 @@ expr_0_2 = peg_t()
       integer :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 integer :: expr_0_2
-character(len=:), allocatable :: expr_1_0
+integer :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -419,7 +429,7 @@ character(len=:), allocatable :: expr_1_0
 
       savePoint = cursor
       
-      do i = 0, 2
+      do i = 0, 1
           select case(i)
           
           case(0)
@@ -445,9 +455,11 @@ expr_0_2 = peg_t()
           case(1)
               cursor = savePoint
               
+              expr_1_0 = peg_f()
               
               
-              res = peg_f()
+              res = expr_1_0
+   
               
                
 
@@ -474,7 +486,7 @@ character(len=:), allocatable :: expr_0_2
 
       savePoint = cursor
       
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
@@ -519,7 +531,7 @@ character(len=:), allocatable :: expr_0_2
 
       savePoint = cursor
        
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
@@ -564,7 +576,7 @@ character(len=:), allocatable :: expr_0_2
 
       savePoint = cursor
       
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
@@ -608,15 +620,23 @@ expr_0_2 = peg__()
 
       savePoint = cursor
       
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
               cursor = savePoint
               
               
+                lexemeStart = cursor
+                do while (.not. cursor > len(input))
+                     if (.not. (acceptSet([char(32),char(9),char(10),char(13)]))) exit
+                end do
+                expr_0_0 = consumeInput()
               
               
+              
+              res = expr_0_0
+   
               
                
 
@@ -640,15 +660,23 @@ expr_0_2 = peg__()
 
       savePoint = cursor
        
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
               cursor = savePoint
               
               
+                lexemeStart = cursor
+                do while (.not. cursor > len(input))
+                     if (.not. (acceptSet([char(32),char(9),char(10),char(13)]))) exit
+                end do
+                expr_0_0 = consumeInput()
               
               
+              
+              res = expr_0_0
+   
               
                
 
@@ -672,15 +700,23 @@ expr_0_2 = peg__()
 
       savePoint = cursor
       
-      do i = 0, 1
+      do i = 0, 0
           select case(i)
           
           case(0)
               cursor = savePoint
               
               
+                lexemeStart = cursor
+                do while (.not. cursor > len(input))
+                     if (.not. (acceptSet([char(32),char(9),char(10),char(13)]))) exit
+                end do
+                expr_0_0 = consumeInput()
               
               
+              
+              res = expr_0_0
+   
               
                
 

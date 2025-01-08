@@ -308,7 +308,7 @@ function getReplaceKleene(data) {
 * @returns
 */
 export const election = (data) => `
-      do i = 0, ${data.exprs.length}
+      do i = 0, ${data.exprs.length-1}
           select case(i)
           ${data.exprs
             .map(
@@ -857,12 +857,17 @@ export const strExpr_NegAssertion = (data) => {
 * }} data
 * @returns
 */
-export const strResultExpr = (data) => {
- if (data.exprs && data.exprs.length > 0) {
+export const strResultExpr = (data, haveAction) => {
+ if (data.exprs && data.exprs.length > 0 && haveAction) {
    return `
               res = ${data.exprs.map((expr) => `toStr(${expr})`).join("//")}
    `;
- } else {
+ } else if (! haveAction){
+   return `
+              res = ${data.exprs.map((expr) => `${expr}`).join("//")}
+   `;
+}
+ else {
    return ` `;
  }
 };
