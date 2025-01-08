@@ -3,7 +3,7 @@
     contains
     function temp() result(res)
         character(len=:), allocatable :: res
-        character(len=10) :: temp_str
+        character(len=32) :: temp_str
         id = id + 1
         write(temp_str, '(A, I0)') "t", id
         res = trim(adjustl(temp_str)) 
