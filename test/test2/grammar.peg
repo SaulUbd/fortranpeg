@@ -1,0 +1,37 @@
+{
+    integer :: id = 0
+    contains
+    function temp() result(res)
+        character(len=:), allocatable :: res
+        character(len=10) :: temp_str
+        id = id + 1
+        write(temp_str, '(A, I0)') "t", id
+        res = trim(adjustl(temp_str)) 
+    end function temp
+}
+
+s = out:e {
+    character(len=:), allocatable :: res
+    res = out
+}
+
+e = left:t "+" right:e {
+    character(len=:), allocatable :: res
+    res = temp()
+    print *, res // " = " // left // " + " // right // CHAR(10)
+}
+    / t
+
+t = left:f "*" right:t {
+    character(len=:), allocatable :: res
+    res = temp()
+    print *, res // " = " // left // " * " // right // CHAR(10)
+}
+    / f 
+
+f = _ num:[0-9]+ _ {
+    character(len=:), allocatable :: res
+    res = num
+}
+
+_ = [ \t\n\r]*
