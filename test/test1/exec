@@ -1,4 +1,4 @@
-gfortran -g -c parser.f90
-gfortran -g -c test.f90
-gfortran -g parser.o test.o -o test
+gfortran -c parser.f90
+gfortran -c test.f90
+gfortran arser.o test.o -o test
 ./test input.txt

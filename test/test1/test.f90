@@ -5,7 +5,7 @@ program test
 	character(len=:), allocatable :: inputstr
 	integer :: u, len
 	logical :: exists
-    character(len=:), allocatable :: output
+	integer :: output
 
 	if (command_argument_count() == 0) then
 		print *, "error: no input file"
@@ -20,6 +20,7 @@ program test
 		allocate (character(len=len) :: inputstr)
         read (1) inputstr
 		output = parse(inputstr)
+		print *, output
 	else
 		print *, "error: file is not present"
 		stop
