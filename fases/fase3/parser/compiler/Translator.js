@@ -65,8 +65,9 @@ export default class FortranTranslator {
    */
   visitRegla(node) {
 
-    console.log("\nVisit Regla: ")
+    console.log("\n-----------------------\n|     Visit Regla     |\n-----------------------")
     console.dir(node)
+    console.dir(node.expr.exprs)
     console.dir(this.actionReturnTypes)
     this.currentRule = node.id;
     this.currentChoice = 0;
@@ -107,7 +108,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitOpciones(node) {
-    console.log("\Visit Opciones: ") // <3
+    console.log("\nVisit Opciones: ") // <3
     console.dir(node)
     return Template.election({
       exprs: node.exprs.map((expr) => {
@@ -123,7 +124,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitUnion(node) {
-    console.log("\nVisit Union: ") // <3
+    console.log("\n-----------------------\n|     Visit Union     |\n-----------------------")
     console.dir(node)
     const matchExprs = node.exprs.filter((expr) => expr instanceof CST.Pluck);
     console.log(`\tMatchExprs:`)
