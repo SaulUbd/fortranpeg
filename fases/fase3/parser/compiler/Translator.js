@@ -65,14 +65,16 @@ export default class FortranTranslator {
    */
   visitRegla(node) {
 
-    console.log("\nVisit Regla: ")
+    console.log("\n-----------------------\n|     Visit Regla     |\n-----------------------")
     console.dir(node)
+    console.dir(node.expr.exprs)
     console.dir(this.actionReturnTypes)
     this.currentRule = node.id;
     this.currentChoice = 0;
     this.conteoAccion = 0;
 
     if (node.start) this.translatingStart = true;
+
 
     const ruleTranslation = Template.rule({
       id: node.id,
@@ -85,10 +87,9 @@ export default class FortranTranslator {
           .filter((expr) => expr instanceof CST.Pluck)
           .map((label, j) => {
             const expr = label.labeledExpr.annotatedExpr.expr;
-            console.log(election)
             return `${
               expr instanceof CST.Identificador
-                ? getReturnType(getActionId(expr.id, election.action ? i : 0), this.actionReturnTypes)
+                ? getReturnType(getActionId(expr.id, 0), this.actionReturnTypes)
                 : "character(len=:), allocatable"
             } :: expr_${i}_${j}`;
           })
@@ -107,7 +108,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitOpciones(node) {
-    console.log("\Visit Opciones: ") // <3
+    console.log("\nVisit Opciones: ") // <3
     console.dir(node)
     return Template.election({
       exprs: node.exprs.map((expr) => {
@@ -123,7 +124,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitUnion(node) {
-    console.log("\nVisit Union: ") // <3
+    console.log("\n-----------------------\n|     Visit Union     |\n-----------------------")
     console.dir(node)
     const matchExprs = node.exprs.filter((expr) => expr instanceof CST.Pluck);
     console.log(`\tMatchExprs:`)
@@ -701,7 +702,7 @@ export default class FortranTranslator {
       paramDeclarations: Object.entries(node.params).map(
         ([label, ruleId]) =>
           `${getReturnType(
-            getActionId(ruleId, this.currentChoice),
+            getActionId(ruleId, 0),
             this.actionReturnTypes
           )} :: ${label}`
       ),

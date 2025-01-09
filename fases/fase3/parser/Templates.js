@@ -15,7 +15,7 @@ export const main = (data) => `
 module parser
   implicit none
   character(len=:), allocatable, private :: input
-  integer, private :: savePoint, lexemeStart, cursor
+  integer, private :: lexemeStart, cursor
 
   interface toStr
       module procedure intToStr
@@ -254,6 +254,7 @@ export const rule = (data) => `
       integer :: count, min_reps, max_reps, tempi
       integer :: i
       logical :: pivote
+      integer :: savePoint
 
       savePoint = cursor
       ${data.expr}
@@ -266,6 +267,7 @@ export const rule = (data) => `
       integer :: count, min_reps, max_reps
       integer :: i, tempi
       logical :: pivote
+      integer :: savePoint
 
       savePoint = cursor
        ${data.expr.replace(/if\(\.not\./g, "if(")}
@@ -278,6 +280,7 @@ export const rule = (data) => `
       integer :: count, min_reps, max_reps, tempi
       integer :: i
       logical :: pivote
+      integer :: savePoint
 
       savePoint = cursor
       ${getReplaceKleene(data)}
@@ -308,7 +311,7 @@ function getReplaceKleene(data) {
 * @returns
 */
 export const election = (data) => `
-      do i = 0, ${data.exprs.length-1}
+      do i = 0, ${data.exprs.length}
           select case(i)
           ${data.exprs
             .map(
