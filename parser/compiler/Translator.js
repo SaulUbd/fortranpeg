@@ -224,7 +224,8 @@ export default class FortranTranslator {
                         do while (.not. temp == "")
                             temp = ${node.expr
                               .accept(this)
-                              .replace(/\(\)$/, "")}_kleene()
+                              //.replace(/\(\)$/, "")}_kleene()
+                              .replace(/\(\)$/, "")}()
                             ${getExprId(
                               this.currentChoice,
                               this.currentExpr

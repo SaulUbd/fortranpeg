@@ -2,19 +2,19 @@ program test
     use parser
     implicit none
     character(len=:), allocatable :: in
-	integer :: out
+    integer :: out
+    
+    print *, "Type an arithmetic expression or 'exit'"
 
-	print *, "Type an arithmetic expression or 'exit'"
-
-    ! type looping
+    ! typing loop
     do
         allocate(character(len=100) :: in)
-        ! prompt
-        write(*, "(A)", advance="no") "> "
         
-        read (*,*) in
-
-        ! exit
+        ! prompt
+        write(*, "(A)", advance="no") "> "        
+        read (*,"(A)") in
+        
+        ! exit check
         if (in == 'exit') then
             print *, "Exiting..."
             exit
@@ -22,9 +22,8 @@ program test
 
         ! parse expression
         out = parse(in)
-
-        ! print
         print *, out
+        
         deallocate(in)
     end do
     
