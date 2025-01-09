@@ -10,26 +10,37 @@
     end function temp
 }
 
-s = out:e {
-    character(len=:), allocatable :: res
-    res = out
-}
+s = (e ";" _)*
 
 e = left:t "+" right:e {
-    character(len=:), allocatable :: res
-    res = temp()
-    print *, res // " = " // left // " + " // right // CHAR(10)
-}
+        character(len=:), allocatable :: res
+        res = temp()
+        print *, res // " = " // left // " + " // right
+    }
+    / left:t "-" right:e {
+        character(len=:), allocatable :: res
+        res = temp()
+        print *, res // " = " // left // " - " // right
+    }
     / t
 
 t = left:f "*" right:t {
-    character(len=:), allocatable :: res
-    res = temp()
-    print *, res // " = " // left // " * " // right // CHAR(10)
-}
+        character(len=:), allocatable :: res
+        res = temp()
+        print *, res // " = " // left // " * " // right 
+    }
+    / left:f "/" right:t {
+        character(len=:), allocatable :: res
+        res = temp()
+        print *, res // " = " // left // " / " // right 
+    }
     / f 
 
-f = _ num:[0-9]+ _ {
+f = _ "(" exp:e ")" _ {
+        character(len=:), allocatable :: res
+        res = exp
+    }
+    / _ num:[0-9]+ _ {
     character(len=:), allocatable :: res
     res = num
 }
