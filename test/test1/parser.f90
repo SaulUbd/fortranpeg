@@ -11,14 +11,23 @@ module parser
   end interface
   
   
+    integer :: id = 0
+   
 
   contains
   
-  
+  function temp() result(res)
+        character(len=:), allocatable :: res
+        character(len=32) :: temp_str
+        id = id + 1
+        write(temp_str, '(A, I0)') "t", id
+        res = trim(adjustl(temp_str)) 
+    end function temp
+
 
   function parse(str) result(res)
       character(len=:), allocatable :: str
-      integer :: res
+      character(len=:), allocatable :: res
 
       input = str
       cursor = 1
@@ -28,8 +37,8 @@ module parser
 
   
   recursive function peg_s() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -63,8 +72,8 @@ module parser
   end function peg_s
 
    function peg_s_negative() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps
       integer :: i, tempi
@@ -98,8 +107,8 @@ module parser
    end function peg_s_negative
 
   function peg_s_kleene() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -126,7 +135,7 @@ module parser
               exit
           
           case default
-        res = -99999
+        res = ""
           end select
       end do
 
@@ -134,14 +143,11 @@ module parser
 
 
   recursive function peg_e() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
-integer :: expr_0_2
-integer :: expr_1_0
-character(len=:), allocatable :: expr_1_1
-integer :: expr_1_2
-integer :: expr_2_0
+character(len=:), allocatable :: expr_0_2
+character(len=:), allocatable :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -150,7 +156,7 @@ integer :: expr_2_0
 
       savePoint = cursor
       
-      do i = 0, 3
+      do i = 0, 2
           select case(i)
           
           case(0)
@@ -177,29 +183,9 @@ expr_0_2 = peg_e()
               cursor = savePoint
               
               expr_1_0 = peg_t()
-
-               lexemeStart = cursor
-               if(.not. acceptString('-')) cycle
-               expr_1_1 = consumeInput()
-       
-expr_1_2 = peg_e()
               
               
-              res = peg_e_f1(expr_1_0, expr_1_2)
-
-              
-               
-
-
-              exit
-          
-          case(2)
-              cursor = savePoint
-              
-              expr_2_0 = peg_t()
-              
-              
-              res = expr_2_0
+              res = expr_1_0
    
               
                
@@ -215,14 +201,11 @@ expr_1_2 = peg_e()
   end function peg_e
 
    function peg_e_negative() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
-integer :: expr_0_2
+character(len=:), allocatable :: expr_0_2
 character(len=:), allocatable :: expr_1_0
-character(len=:), allocatable :: expr_1_1
-integer :: expr_1_2
-integer :: expr_2_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps
       integer :: i, tempi
@@ -231,7 +214,7 @@ integer :: expr_2_0
 
       savePoint = cursor
        
-      do i = 0, 3
+      do i = 0, 2
           select case(i)
           
           case(0)
@@ -258,29 +241,9 @@ expr_0_2 = peg_e()
               cursor = savePoint
               
               expr_1_0 = peg_t()
-
-               lexemeStart = cursor
-               if( acceptString('-')) cycle
-               expr_1_1 = consumeInput()
-       
-expr_1_2 = peg_e()
               
               
-              res = peg_e_f1(expr_1_0, expr_1_2)
-
-              
-               
-
-
-              exit
-          
-          case(2)
-              cursor = savePoint
-              
-              expr_2_0 = peg_t()
-              
-              
-              res = expr_2_0
+              res = expr_1_0
    
               
                
@@ -296,14 +259,11 @@ expr_1_2 = peg_e()
    end function peg_e_negative
 
   function peg_e_kleene() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
-integer :: expr_0_2
+character(len=:), allocatable :: expr_0_2
 character(len=:), allocatable :: expr_1_0
-character(len=:), allocatable :: expr_1_1
-integer :: expr_1_2
-integer :: expr_2_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -312,7 +272,7 @@ integer :: expr_2_0
 
       savePoint = cursor
       
-      do i = 0, 3
+      do i = 0, 2
           select case(i)
           
           case(0)
@@ -339,29 +299,9 @@ expr_0_2 = peg_e()
               cursor = savePoint
               
               expr_1_0 = peg_t()
-
-               lexemeStart = cursor
-               if(.not. acceptString('-')) cycle
-               expr_1_1 = consumeInput()
-       
-expr_1_2 = peg_e()
               
               
-              res = peg_e_f1(expr_1_0, expr_1_2)
-
-              
-               
-
-
-              exit
-          
-          case(2)
-              cursor = savePoint
-              
-              expr_2_0 = peg_t()
-              
-              
-              res = expr_2_0
+              res = expr_1_0
    
               
                
@@ -370,7 +310,7 @@ expr_1_2 = peg_e()
               exit
           
           case default
-        res = -99999
+        res = ""
           end select
       end do
 
@@ -378,11 +318,11 @@ expr_1_2 = peg_e()
 
 
   recursive function peg_t() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
-integer :: expr_0_2
-integer :: expr_1_0
+character(len=:), allocatable :: expr_0_2
+character(len=:), allocatable :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -436,11 +376,11 @@ expr_0_2 = peg_t()
   end function peg_t
 
    function peg_t_negative() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
-integer :: expr_0_2
-integer :: expr_1_0
+character(len=:), allocatable :: expr_0_2
+character(len=:), allocatable :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps
       integer :: i, tempi
@@ -494,11 +434,11 @@ expr_0_2 = peg_t()
    end function peg_t_negative
 
   function peg_t_kleene() result (res)
-      integer :: res
-      integer :: expr_0_0
+      character(len=:), allocatable :: res
+      character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
-integer :: expr_0_2
-integer :: expr_1_0
+character(len=:), allocatable :: expr_0_2
+character(len=:), allocatable :: expr_1_0
       character(len=:), allocatable :: temp
       integer :: count, min_reps, max_reps, tempi
       integer :: i
@@ -545,7 +485,7 @@ expr_0_2 = peg_t()
               exit
           
           case default
-        res = -99999
+        res = ""
           end select
       end do
 
@@ -553,7 +493,7 @@ expr_0_2 = peg_t()
 
 
   recursive function peg_f() result (res)
-      integer :: res
+      character(len=:), allocatable :: res
       character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 character(len=:), allocatable :: expr_0_2
@@ -599,7 +539,7 @@ expr_0_2 = peg__()
   end function peg_f
 
    function peg_f_negative() result (res)
-      integer :: res
+      character(len=:), allocatable :: res
       character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 character(len=:), allocatable :: expr_0_2
@@ -645,7 +585,7 @@ expr_0_2 = peg__()
    end function peg_f_negative
 
   function peg_f_kleene() result (res)
-      integer :: res
+      character(len=:), allocatable :: res
       character(len=:), allocatable :: expr_0_0
 character(len=:), allocatable :: expr_0_1
 character(len=:), allocatable :: expr_0_2
@@ -684,7 +624,7 @@ expr_0_2 = peg__()
               exit
           
           case default
-        res = -99999
+        res = ""
           end select
       end do
 
@@ -817,8 +757,8 @@ expr_0_2 = peg__()
 
   
   function peg_s_f0(out) result(res)
-      integer :: out
-      integer :: res
+      character(len=:), allocatable :: out
+      character(len=:), allocatable :: res
       
     res = out
 
@@ -826,40 +766,32 @@ expr_0_2 = peg__()
   
 
   function peg_e_f0(left, right) result(res)
-      integer :: left
-integer :: right
-      integer :: res
+      character(len=:), allocatable :: left
+character(len=:), allocatable :: right
+      character(len=:), allocatable :: res
       
-    res = left + right
+    res = temp()
+    print *, res // " = " // left // " + " // right // CHAR(10)
 
   end function peg_e_f0
   
 
-  function peg_e_f1(left, right) result(res)
-      character(len=:), allocatable :: left
-integer :: right
-      integer :: res
-      
-    res = left - right
-
-  end function peg_e_f1
-  
-
   function peg_t_f0(left, right) result(res)
-      integer :: left
-integer :: right
-      integer :: res
+      character(len=:), allocatable :: left
+character(len=:), allocatable :: right
+      character(len=:), allocatable :: res
       
-    res = left * right
+    res = temp()
+    print *, res // " = " // left // " * " // right // CHAR(10)
 
   end function peg_t_f0
   
 
   function peg_f_f0(num) result(res)
       character(len=:), allocatable :: num
-      integer :: res
+      character(len=:), allocatable :: res
       
-    read(num, *) res
+    res = num
 
   end function peg_f_f0
   

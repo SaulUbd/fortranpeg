@@ -75,6 +75,7 @@ export default class FortranTranslator {
 
     if (node.start) this.translatingStart = true;
 
+
     const ruleTranslation = Template.rule({
       id: node.id,
       returnType: getReturnType(
@@ -86,10 +87,9 @@ export default class FortranTranslator {
           .filter((expr) => expr instanceof CST.Pluck)
           .map((label, j) => {
             const expr = label.labeledExpr.annotatedExpr.expr;
-            console.log(election)
             return `${
               expr instanceof CST.Identificador
-                ? getReturnType(getActionId(expr.id, election.action ? i : 0), this.actionReturnTypes)
+                ? getReturnType(getActionId(expr.id, 0), this.actionReturnTypes)
                 : "character(len=:), allocatable"
             } :: expr_${i}_${j}`;
           })
@@ -702,7 +702,7 @@ export default class FortranTranslator {
       paramDeclarations: Object.entries(node.params).map(
         ([label, ruleId]) =>
           `${getReturnType(
-            getActionId(ruleId, this.currentChoice),
+            getActionId(ruleId, 0),
             this.actionReturnTypes
           )} :: ${label}`
       ),
