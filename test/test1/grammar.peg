@@ -4,15 +4,15 @@ s = out:e {
 }
 
 e = left:t "+" right:e {
-    integer :: res
-    res = left + right
-}
+        integer :: res
+        res = left + right
+    }
     / t
 
 t = left:f "*" right:t {
-    integer :: res
-    res = left * right
-}
+        integer :: res
+        res = left * right
+    }
     / f 
 
 f = _ num:[0-9]+ _ {

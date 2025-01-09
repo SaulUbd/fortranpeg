@@ -1,31 +1,31 @@
 program test
-	use parser
-	implicit none
-	character(len=100) :: filename
-	character(len=:), allocatable :: inputstr
-	integer :: u, len
-	logical :: exists
-	integer :: output
+    use parser
+    implicit none
+    character(len=:), allocatable :: in
+	integer :: out
 
-	if (command_argument_count() == 0) then
-		print *, "error: no input file"
-		stop
-	end if
+	print *, "Type an arithmetic expression or 'exit'"
 
-	call get_command_argument(1, filename)
+    ! type looping
+    do
+        allocate(character(len=100) :: in)
+        ! prompt
+        write(*, "(A)", advance="no") "> "
+        
+        read (*,*) in
 
-	inquire(file=filename, exist=exists, size=len)
-	if (exists) then
-		open (1, file=filename, status='old', action='read', access='stream', form='unformatted')
-		allocate (character(len=len) :: inputstr)
-        read (1) inputstr
-		output = parse(inputstr)
-		print *, output
-	else
-		print *, "error: file is not present"
-		stop
-	end if
+        ! exit
+        if (in == 'exit') then
+            print *, "Exiting..."
+            exit
+        end if
 
-	close(u)
+        ! parse expression
+        out = parse(in)
 
+        ! print
+        print *, out
+        deallocate(in)
+    end do
+    
 end program test
