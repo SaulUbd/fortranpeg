@@ -7,6 +7,7 @@
 *  startingRuleType: string;
 *  rules: string[];
 *  actions: string[];
+*  groups: string[];
 * }} data
 * @returns {string}
 */
@@ -40,7 +41,10 @@ module parser
 
   ${data.rules.join("\n")}
 
+  ${data.groups.join("\n")}
+
   ${data.actions.join("\n")}
+
 
   function acceptString(str) result(accept)
       character(len=*) :: str
