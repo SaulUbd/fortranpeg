@@ -33,6 +33,8 @@ f = "(" e ")"
 _ = [ \t\n\r]*
 ```
 
+![Alt text](https://github.com/ECYS-FIUSAC/fortranpeg/blob/main/img/screenshot1.png?raw=true "execute")
+
 Next, semantic actions can be added to the end of each rule in Fortran code within brackets.
 
 To access the values ​​in the body of the rule, a label can be defined, for example, in the rule: 
@@ -51,7 +53,8 @@ Where "num" will be automatically declared in the rule function.
 
 By default, these labels are declared as strings, it is the user's responsibility to return a desired type.
 
->[!IMPORTANT] By convention, in each rule function a value and return type can be defined with the name "res".
+>[!IMPORTANT]
+>By convention, in each rule function a value and return type can be defined with the name "res".
 
 For example, to return an integer from the rule:
 
@@ -75,6 +78,9 @@ The complete grammar can be found at this link:
 
 Now that you have the grammar, use the online generator to download the parser. It will be downloaded as parser.f90.
 
+![Alt text](https://github.com/ECYS-FIUSAC/fortranpeg/blob/main/img/screenshot2.png?raw=true "execute")
+
+
 To use the parser, you will need a Fortran program that will make calls to the parse(input) function with the string to be evaluated.
 
 Here you can find an example program for testing:
@@ -90,8 +96,8 @@ gfortran parser.o test.o -o test
 ./test
 ```
 
->[!TIP] Alternatively, you can use a bash with these lines: \# bash
-[exec](https://github.com/ECYS-FIUSAC/fortranpeg/blob/main/test/test1/exec)
+>[!TIP]
+>Alternatively, you can use a bash with these lines: \# bash [exec](https://github.com/ECYS-FIUSAC/fortranpeg/blob/main/test/test1/exec)
 
 Congratulations :clap:, you can now use the built program:
 
