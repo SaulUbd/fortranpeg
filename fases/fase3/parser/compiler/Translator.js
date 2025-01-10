@@ -21,6 +21,9 @@ export default class FortranTranslator {
   currentChoice;
   /** @type {number} */
   currentExpr;
+  /** @type {string[]} */
+  groups;
+
 
   /**
    *
@@ -34,6 +37,8 @@ export default class FortranTranslator {
     this.currentChoice = 0;
     this.currentExpr = 0;
     this.conteoAccion = 0;
+    // variables for groups
+    this.groups = [];
   }
 
   /**
@@ -54,6 +59,7 @@ export default class FortranTranslator {
         getActionId(node.rules[0].id, 0),
         this.actionReturnTypes
       ),
+      groups: this.groups,
       actions: this.actions,
       rules,
     });
@@ -206,7 +212,11 @@ export default class FortranTranslator {
     console.dir(node)
     console.dir(this.actionReturnTypes)
     if (node.expr instanceof CST.Opciones){
-      return ``
+      const groupName = `group_${this.groups.length}`
+      const newGroup = new CST.Regla(groupName, node.expr, null);
+      this.groups.push(newGroup.accept(this))
+
+      node.expr = new CST.Identificador(groupName);
     }
     if (node.qty && typeof node.qty === "string") {
       
@@ -314,7 +324,8 @@ export default class FortranTranslator {
           this.currentChoice,
           this.currentExpr
         )} = ${node.expr.accept(this)}`;
-      }
+      } 
+
       return Template.strExpr({
         quantifier: node.qty,
         expr: node.expr.accept(this),
@@ -582,6 +593,11 @@ export default class FortranTranslator {
       });
     }
   }
+
+  /**
+   * @param {CST.}
+   */
+
 
   /**
    * @param {CST.Regla} node
