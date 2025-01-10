@@ -46,9 +46,7 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitGrammar(node) {
-    console.log("\nVisit Grammar: ")
-    console.dir(node)
-    console.dir(this.actionReturnTypes)
+ 
     const rules = node.rules.map((rule) => rule.accept(this));
 
     return Template.main({
@@ -114,8 +112,8 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitOpciones(node) {
-    console.log("\nVisit Opciones: ") // <3
-    console.dir(node)
+    //console.log("\nVisit Opciones: ") // <3
+    //console.dir(node)
     return Template.election({
       exprs: node.exprs.map((expr) => {
         const translation = expr.accept(this);
@@ -188,8 +186,8 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitPluck(node) {
-    console.log("\nVisit Pluck: ")
-    console.dir(node)
+    //console.log("\nVisit Pluck: ")
+    //console.dir(node)
     return node.labeledExpr.accept(this);
   }
 
@@ -198,8 +196,8 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitLabel(node) {
-    console.log("\nVisit Label: ")
-    console.dir(node)
+    //console.log("\nVisit Label: ")
+    //console.dir(node)
     return node.annotatedExpr.accept(this);
   }
 
@@ -208,9 +206,9 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitAnnotated(node) {
-    console.log("\nVisit Annotated: ")
-    console.dir(node)
-    console.dir(this.actionReturnTypes)
+    //console.log("\nVisit Annotated: ")
+    //console.dir(node)
+    //console.dir(this.actionReturnTypes)
     if (node.expr instanceof CST.Opciones){
       const groupName = `group_${this.groups.length}`
       const newGroup = new CST.Regla(groupName, node.expr, null);
