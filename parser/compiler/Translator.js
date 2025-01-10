@@ -46,7 +46,8 @@ export default class FortranTranslator {
    * @this {Visitor}
    */
   visitGrammar(node) {
- 
+    console.log("Visit Grammar: ")
+    console.dir(node)
     const rules = node.rules.map((rule) => rule.accept(this));
 
     return Template.main({
@@ -211,11 +212,14 @@ export default class FortranTranslator {
     //console.dir(this.actionReturnTypes)
     if (node.expr instanceof CST.Opciones){
       const groupName = `group_${this.groups.length}`
-      const newGroup = new CST.Regla(groupName, node.expr, null);
+      const newGroup = new CST.Regla(groupName, node.expr, undefined, undefined);
       const lastChoiceVal = this.currentChoice
       const lastCurrentExpr = `${Number(this.currentExpr)}`
       //console.log(`NUMERO: ${lastCurrentExpr}`)
+      const lastTranslatingStart = this.translatingStart;
+      this.translatingStart = false;
       this.groups.push(newGroup.accept(this))
+      this.translatingStart = lastTranslatingStart;
       node.expr = new CST.Identificador(groupName);
       this.currentChoice = lastChoiceVal
       //this.currentExpr = this.currentExpr
@@ -234,7 +238,7 @@ export default class FortranTranslator {
           if (tipo == "character(len=:), allocatable") {
             code += `${getExprId(this.currentChoice, this.currentExpr)} = ""
                         temp = "-"
-                        do while (.not. temp == "")
+                        do while (.not. temp == "" .and. len(input) >= cursor)
                             temp = ${node.expr
                               .accept(this)
                               .replace(/\(\)$/, "")}_kleene()
@@ -279,7 +283,7 @@ export default class FortranTranslator {
               this.currentExpr
             )} = ${node.expr.accept(this)}
                         temp = "-"
-                        do while (.not. temp == "")
+                        do while (.not. temp == "" .and. len(input) >= cursor)
                             temp = ${node.expr
                               .accept(this)
                               .replace(/\(\)$/, "")}_kleene()
