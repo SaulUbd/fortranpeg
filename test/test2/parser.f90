@@ -53,11 +53,11 @@ module parser
           case(0)
               cursor = savePoint
               
-              expr_1_3 = ""
+              expr_0_0 = ""
                         temp = "-"
                         do while (.not. temp == "")
                             temp = peg_group_0_kleene()
-                            expr_1_3 = expr_1_3 // temp
+                            expr_0_0 = expr_0_0 // temp
                         end do
                         
               
@@ -94,11 +94,11 @@ module parser
           case(0)
               cursor = savePoint
               
-              expr_1_3 = ""
+              expr_0_0 = ""
                         temp = "-"
                         do while (.not. temp == "")
                             temp = peg_group_0_kleene()
-                            expr_1_3 = expr_1_3 // temp
+                            expr_0_0 = expr_0_0 // temp
                         end do
                         
               
@@ -135,11 +135,11 @@ module parser
           case(0)
               cursor = savePoint
               
-              expr_1_3 = ""
+              expr_0_0 = ""
                         temp = "-"
                         do while (.not. temp == "")
                             temp = peg_group_0_kleene()
-                            expr_1_3 = expr_1_3 // temp
+                            expr_0_0 = expr_0_0 // temp
                         end do
                         
               

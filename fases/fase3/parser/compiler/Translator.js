@@ -214,9 +214,14 @@ export default class FortranTranslator {
     if (node.expr instanceof CST.Opciones){
       const groupName = `group_${this.groups.length}`
       const newGroup = new CST.Regla(groupName, node.expr, null);
+      const lastChoiceVal = this.currentChoice
+      const lastCurrentExpr = `${Number(this.currentExpr)}`
+      //console.log(`NUMERO: ${lastCurrentExpr}`)
       this.groups.push(newGroup.accept(this))
-
       node.expr = new CST.Identificador(groupName);
+      this.currentChoice = lastChoiceVal
+      //this.currentExpr = this.currentExpr
+      this.currentExpr = lastCurrentExpr
     }
     if (node.qty && typeof node.qty === "string") {
       
