@@ -11,6 +11,11 @@ FortranPEG is an online parser generator that uses a PEG grammar and generates a
 
 ### [Try FortranPEG online!](https://ecys-fiusac.github.io/fortranpeg/)
 
+# Content
+
+- [Usage guide](#usage-guide)
+- [Developing FortranPEG](developing-fortranpeg)
+
 
 ## Usage guide
 
@@ -105,6 +110,19 @@ Congratulations :clap:! You can now use the built program!
 
 ![Alt text](https://github.com/ECYS-FIUSAC/fortranpeg/blob/main/test/test1/screenshot.png?raw=true "execute")
 
+## Developing FortranPEG
 
+### Dependencies
 
+- Python
+    - commitizen
+    - pre-commit
+
+### Set up workspace
+
+1. run scripts/setup.sh
+
+```bash
+bash scripts/setup.sh
+```
 
