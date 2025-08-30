@@ -1,5 +1,5 @@
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/+esm';
-import { parse } from './parser/gramatica.js';
+import { parse } from "./parser/peg_parser.js";
 import { generateParser } from './parser/compiler/utils.js';
 
 export let ids = [];
