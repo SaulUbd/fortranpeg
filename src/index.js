@@ -1,10 +1,7 @@
 import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/+esm';
 import { parse } from "./parser/peg_parser.js";
 import { generateParser } from './parser/compiler/utils.js';
-
-export let ids = [];
-export let usos = [];
-export let errores = [];
+import { ids, usos, errores } from "./parser/common.js";
 
 // Crear el editor principal
 const editor = monaco.editor.create(document.getElementById('editor'), {

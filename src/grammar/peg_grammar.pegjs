@@ -1,12 +1,6 @@
-{{
-    
-    // let identificadores = []
-
-    // import { identificadores } from '../index.js'
-
-    import { ids, usos} from '../index.js'
+{{ 
+    import { ids, usos, errores } from './common.js'
     import { ErrorReglas } from './error.js';
-    import { errores } from '../index.js'
 
     import * as n from './visitor/CST.js';
 }}
@@ -45,20 +39,7 @@ opciones
 
 union
   = expr:parsingExpression rest:(_ @parsingExpression !(_ literales? _ "=") )* action:(_ @predicate)? {
-
     const exprs = [expr, ...rest];
-    const labeledExprs = exprs
-        .filter((expr) => expr instanceof n.Pluck)
-        .filter((expr) => expr.labeledExpr.label);
-    if (labeledExprs.length > 0) {
-        action.params = labeledExprs.reduce((args, labeled) => {
-            const expr = labeled.labeledExpr.annotatedExpr.expr;
-            args[labeled.labeledExpr.label] =
-                expr instanceof n.Identificador ? expr.id : '';
-            return args;
-        }, {});
-    }
-
     return new n.Union(exprs, action);
   }
 
@@ -141,7 +122,7 @@ conteo
 
 predicate
   = _ assertion:('&'/"!")? "{" [ \t\n\r]* returnType:predicateReturnType code:$[^}]* "}" {
-    return new n.Predicate(returnType, code, assertion,{})
+    return new n.Predicate(returnType, code, assertion, {})
   }
 
 predicateReturnType

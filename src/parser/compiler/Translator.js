@@ -1,5 +1,5 @@
 import * as CST from "../visitor/CST.js";
-import * as Template from "../Templates.js";
+import * as Template from "./Templates.js";
 import { getActionId, getReturnType, getExprId, getRuleId } from "./utils.js";
 
 /** @typedef {import('../visitor/Visitor.js').default<string>} Visitor */
@@ -131,6 +131,19 @@ export default class FortranTranslator {
   visitUnion(node) {
     console.log("\n-----------------------\n|     Visit Union     |\n-----------------------")
     console.dir(node)
+
+    const labeledExprs = node.exprs
+        .filter((expr) => expr instanceof CST.Pluck)
+        .filter((expr) => expr.labeledExpr.label);
+    if (labeledExprs.length > 0 && node.action) {
+        node.action.params = labeledExprs.reduce((args, labeled) => {
+            const expr = labeled.labeledExpr.annotatedExpr.expr;
+            args[labeled.labeledExpr.label] =
+                expr instanceof CST.Identificador ? expr.id : '';
+            return args;
+        }, {});
+    }
+
     const matchExprs = node.exprs.filter((expr) => expr instanceof CST.Pluck);
     console.log(`\tMatchExprs:`)
     console.dir(matchExprs)
@@ -176,8 +189,8 @@ export default class FortranTranslator {
       }),
 
       startingRule: this.translatingStart,
-      assertion: node.action?.arguments === "&",
-      negativeAssertion: node.action?.arguments === "!",
+      assertion: node?.action?.assertion === "&",
+      negativeAssertion: node?.action?.assertion === "!",
       resultExpr,
     });
   }
@@ -214,7 +227,7 @@ export default class FortranTranslator {
       const groupName = `group_${this.groups.length}`
       const newGroup = new CST.Regla(groupName, node.expr, undefined, undefined);
       const lastChoiceVal = this.currentChoice
-      const lastCurrentExpr = `${Number(this.currentExpr)}`
+      const lastCurrentExpr = Number(this.currentExpr)
       //console.log(`NUMERO: ${lastCurrentExpr}`)
       const lastTranslatingStart = this.translatingStart;
       this.translatingStart = false;
