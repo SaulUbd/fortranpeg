@@ -1,4 +1,6 @@
 src/parser/peg_parser.js
+src/parser/visitor/CST.js
+src/parser/visitor/Visitor.js
 
 # Logs
 logs

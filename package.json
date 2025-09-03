@@ -8,10 +8,14 @@
     "dev": "vite",
     "prebuild": "make",
     "build": "vite build",
-    "preview": "vite preview"
+    "check": "pnpm run generate-visitor && tsc",
+    "preview": "vite preview",
+    "generate-visitor": "node tools/Generator.js"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "peggy": "^5.0.6",
+    "typescript": "^5.9.2",
     "vite": "^7.1.2"
   }
 }

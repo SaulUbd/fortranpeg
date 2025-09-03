@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "nodenext",
+        "allowJs": true,
+        "checkJs": true,
+        "noEmit": true,
+        "moduleResolution": "nodenext"
+    },
+    "include": ["src", "tools"],
+    "exclude": [
+        "node_modules",
+        "src/parser/peg_parser.js"
+    ]
+}
